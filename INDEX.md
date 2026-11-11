@@ -4,7 +4,7 @@
 >
 > 工作流程、阅读顺序和协作约定见 `README.md`；本文件是资料导航。
 >
-> **在线网站**：https://derekham.github.io/Chinese-Paper-2-Revision/ 。索引和分析里的 `L...`、`第...页` 点开后会进入 `viewer.html` 的对应位置，也可以输入 `R5046`、`S208`、`R-P51`、`S-P208`。
+> **在线网站**：https://chinesepaper2.derekhan.link/ 。索引和分析里的 `L...`、`第...页` 点开后会进入 `viewer.html` 的对应位置，也可以输入 `R5046`、`S208`、`R-P51`、`S-P208`。
 
 ## 一、找例证：从这一份开始
 

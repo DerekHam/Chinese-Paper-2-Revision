@@ -1,6 +1,6 @@
 # README：下一次 session 从这里开始
 
-> 在线网站：https://derekham.github.io/Chinese-Paper-2-Revision/
+> 在线网站：https://chinesepaper2.derekhan.link/
 
 这个文件夹是《日出》与《太阳照常升起》的比较阅读资料库。已经做过的事情主要有三件：把两篇原文全文分成了 255 段并加了标签，整理了一份按论文论点走的例证路线，另外还有一份比较详细的文学分析规范。
 
@@ -86,7 +86,7 @@ sed -n '5040,5072p' 日出.txt
 
 网站入口：
 
-**https://derekham.github.io/Chinese-Paper-2-Revision/**
+**https://chinesepaper2.derekhan.link/**
 
 索引和分析文档里的 `L5046`、`第 51 页` 都是链接，指向同一个阅读器：
 
@@ -265,7 +265,7 @@ python3 _build_site.py
 - 如果重跑 `_merge_index.py`，页码行会从 `_分段原稿/` 保留；合并后再运行 `_build_tag_index.py`，让 `03`、`04` 同步页码。
 - 如果只是写分析、不新增分段，不需要动索引；可以把新文件加到 `INDEX.md` 的“已有论文资料”表里。
 - 引用格式统一带段号、行号和页码，例如：`（《日出》R4-29，L5046，第 51 页）`、`（《太阳照常升起》S3-19-13，L7418–L7425，第 208 页）`。这样下一个 session 能直接回到原文。
-- 新写的 md 也尽量用可点击标签：`[L5046](https://derekham.github.io/Chinese-Paper-2-Revision/viewer.html?w=r&l=5046)`、`[第 208 页](https://derekham.github.io/Chinese-Paper-2-Revision/viewer.html?w=s&p=208)`。
+- 新写的 md 也尽量用可点击标签：`[L5046](https://chinesepaper2.derekhan.link/viewer.html?w=r&l=5046)`、`[第 208 页](https://chinesepaper2.derekhan.link/viewer.html?w=s&p=208)`。
 
 ### 页码标注（硬性要求）
 

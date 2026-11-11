@@ -24,7 +24,7 @@ import markdown
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 DOCS = os.path.join(BASE, "docs")
-SITE_BASE = "https://derekham.github.io/Chinese-Paper-2-Revision"
+SITE_BASE = "https://chinesepaper2.derekhan.link"
 
 PAGES = [
     # (源文件, 站点文件名, 标题, 导航分组)
@@ -456,6 +456,7 @@ def copy_assets():
     write("assets/viewer.js", VIEWER_JS)
     write("viewer.html", VIEWER)
     write(".nojekyll", "")
+    write("CNAME", "chinesepaper2.derekhan.link\n")
 
     os.makedirs(os.path.join(DOCS, "texts"), exist_ok=True)
     shutil.copyfile(os.path.join(BASE, "日出.txt"), os.path.join(DOCS, "texts", "richu.txt"))

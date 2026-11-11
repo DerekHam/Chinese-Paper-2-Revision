@@ -50,7 +50,7 @@
 **可用的证据**：
 
 - 《日出》：第四幕舞台说明、陈白露的台词、方达生“太阳就在他们身上”、小工唱“日出啊东来呀”。
-- 《太阳》：开头《传道书》题词（[第 13 页](https://derekham.github.io/Chinese-Paper-2-Revision/viewer.html?w=s&p=13)）、结尾“阳光普照，房屋白得刺眼”（[第 208 页](https://derekham.github.io/Chinese-Paper-2-Revision/viewer.html?w=s&p=208)）、“这么想想不也很好吗？”（[第 208 页](https://derekham.github.io/Chinese-Paper-2-Revision/viewer.html?w=s&p=208)）
+- 《太阳》：开头《传道书》题词（[第 13 页](https://chinesepaper2.derekhan.link/viewer.html?w=s&p=13)）、结尾“阳光普照，房屋白得刺眼”（[第 208 页](https://chinesepaper2.derekhan.link/viewer.html?w=s&p=208)）、“这么想想不也很好吗？”（[第 208 页](https://chinesepaper2.derekhan.link/viewer.html?w=s&p=208)）
 
 **要注意**：不要直接说“曹禺想表达希望”“海明威想表达绝望”。我们能看到的是作品怎么安排场景、怎么说话；作者意图需要序跋、书信、访谈等材料才能讨论。
 
@@ -61,7 +61,7 @@
 **可用的证据**：
 
 - 《日出》：王福升念账单（美丰金店六百五十四块四、永昌绸缎公司三百五十五元五毛五、旅馆二百二十九块七毛六等）；黄省三“一个月不过十三块来钱……实在领下的才十块二毛五”；张乔治说狗吃的牛肉“五毛钱一磅”；潘月亭“拿三块钱给他，叫他滚蛋”；潘月亭买公债二百万，金八买三百万。
-- 《太阳》：杰克看银行结单“结余 2432.60 美元……我尚有存款 1832.60 美元”（[第 37–38 页](https://derekham.github.io/Chinese-Paper-2-Revision/viewer.html?w=s&p=37)）；迈克“我身无分文了。我只有二十法郎”（[第 194 页](https://derekham.github.io/Chinese-Paper-2-Revision/viewer.html?w=s&p=194)）；伯爵提出给勃莱特一万美元（[第 40 页](https://derekham.github.io/Chinese-Paper-2-Revision/viewer.html?w=s&p=40)）；勃莱特“我现在正在还这笔债呢”（[第 35 页](https://derekham.github.io/Chinese-Paper-2-Revision/viewer.html?w=s&p=35)）。
+- 《太阳》：杰克看银行结单“结余 2432.60 美元……我尚有存款 1832.60 美元”（[第 37–38 页](https://chinesepaper2.derekhan.link/viewer.html?w=s&p=37)）；迈克“我身无分文了。我只有二十法郎”（[第 194 页](https://chinesepaper2.derekhan.link/viewer.html?w=s&p=194)）；伯爵提出给勃莱特一万美元（[第 40 页](https://chinesepaper2.derekhan.link/viewer.html?w=s&p=40)）；勃莱特“我现在正在还这笔债呢”（[第 35 页](https://chinesepaper2.derekhan.link/viewer.html?w=s&p=35)）。
 
 **要注意**：不要只列数字。要问：谁在说？对谁说？说完发生了什么？例如，王福升念账单时，陈白露说“不要念，不要念，我不要听啊”；这句话说明账单不仅是数字，也是她无法回避的生活。
 
@@ -72,7 +72,7 @@
 **可用的证据**：
 
 - 《日出》：方达生“可怕，可怕——哦，你怎么现在会一点顾忌也没有”；陈白露“我同他们一样爱钱……但我弄来的钱是我牺牲过我最宝贵的东西换来的”；舞台说明“她爱生活，她也厌恶生活”。
-- 《太阳》：杰克叙述勃莱特的言行；勃莱特“决心不做坏女人使我感到很舒坦”“这种做人的准则多少可以取代上帝”（[第 206–207 页](https://derekham.github.io/Chinese-Paper-2-Revision/viewer.html?w=s&p=206)）；结尾“我们要能在一起该多好”（[第 208 页](https://derekham.github.io/Chinese-Paper-2-Revision/viewer.html?w=s&p=208)）。
+- 《太阳》：杰克叙述勃莱特的言行；勃莱特“决心不做坏女人使我感到很舒坦”“这种做人的准则多少可以取代上帝”（[第 206–207 页](https://chinesepaper2.derekhan.link/viewer.html?w=s&p=206)）；结尾“我们要能在一起该多好”（[第 208 页](https://chinesepaper2.derekhan.link/viewer.html?w=s&p=208)）。
 
 **要注意**：不要把陈白露或勃莱特当成“某种女性”的代表。先看她们在具体场景里说了什么、做了什么，再看别人怎么评价她们。也不要根据几句台词诊断人物有抑郁症、躁狂症等；我们只能分析文本呈现的情绪和行为。
 

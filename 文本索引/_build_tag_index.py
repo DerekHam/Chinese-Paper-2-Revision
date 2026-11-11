@@ -16,7 +16,7 @@ FILES = [
 SEG_RE = re.compile(r"^###\s+([^\s｜]+)｜(?:\[)?L(\d+)[–\-]L?(\d+)(?:\]\([^)]*\))?｜(.+?)\s*$")
 TAG_RE = re.compile(r"^\*\*标签\*\*[：:]\s*(.+)$")
 PAGE_RE = re.compile(r"^\*\*页码\*\*[：:]\s*(.+)$")
-SITE_VIEWER = "https://derekham.github.io/Chinese-Paper-2-Revision/viewer.html"
+SITE_VIEWER = "https://chinesepaper2.derekhan.link/viewer.html"
 
 
 def src_link(work, kind, num, text):

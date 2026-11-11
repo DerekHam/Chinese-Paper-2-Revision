@@ -43,10 +43,10 @@
 
 **《太阳照常升起》**
 
-7. “你们都是迷惘的一代。”（[第 13 页](https://derekham.github.io/Chinese-Paper-2-Revision/viewer.html?w=s&p=13)）
-8. “日头出来，日头落下，急归所出之地。”（[第 13 页](https://derekham.github.io/Chinese-Paper-2-Revision/viewer.html?w=s&p=13)）
-9. “在白天，我极容易就可以对什么都不动感情，但是一到夜里，那是另一码事了。”（[第 41 页](https://derekham.github.io/Chinese-Paper-2-Revision/viewer.html?w=s&p=41)）
-10. “我们要能在一起该多好。”（[第 208 页](https://derekham.github.io/Chinese-Paper-2-Revision/viewer.html?w=s&p=208)）／“这么想想不也很好吗？”（[第 208 页](https://derekham.github.io/Chinese-Paper-2-Revision/viewer.html?w=s&p=208)）
+7. “你们都是迷惘的一代。”（[第 13 页](https://chinesepaper2.derekhan.link/viewer.html?w=s&p=13)）
+8. “日头出来，日头落下，急归所出之地。”（[第 13 页](https://chinesepaper2.derekhan.link/viewer.html?w=s&p=13)）
+9. “在白天，我极容易就可以对什么都不动感情，但是一到夜里，那是另一码事了。”（[第 41 页](https://chinesepaper2.derekhan.link/viewer.html?w=s&p=41)）
+10. “我们要能在一起该多好。”（[第 208 页](https://chinesepaper2.derekhan.link/viewer.html?w=s&p=208)）／“这么想想不也很好吗？”（[第 208 页](https://chinesepaper2.derekhan.link/viewer.html?w=s&p=208)）
 
 ## 段落模板（四步）
 
