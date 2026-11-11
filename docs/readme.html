@@ -169,7 +169,8 @@ viewer.html?w=s&amp;p=208        《太阳》第 208 页
 # 打开 http://localhost:8000/viewer.html?w=r&amp;l=5046
 </code></pre>
 <p>改完 txt 或 md 后重新生成网站：</p>
-<pre><code class="language-bash">python3 _build_site.py
+<pre><code class="language-bash">pip install -r requirements.txt   # 需要 markdown
+python3 _build_site.py
 </code></pre>
 <p>站点输出在 <code>docs/</code>；GitHub Pages 从 <code>docs/</code> 发布。<code>日出.txt</code> 的页码映射在 <code>文本索引/页码映射_日出.tsv</code>，<code>太阳照常升起.txt</code> 的页码直接读 <code>【第 N 页】</code>。</p>
 <hr />

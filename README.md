@@ -112,6 +112,7 @@ python3 -m http.server 8000 --directory docs
 改完 txt 或 md 后重新生成网站：
 
 ```bash
+pip install -r requirements.txt   # 需要 markdown
 python3 _build_site.py
 ```
 
