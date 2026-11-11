@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>使用说明与标签表｜Chinese Paper 2 Revision</title>
+<meta name="description" content="使用说明与标签表｜《日出》与《太阳照常升起》比较阅读">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html">Chinese Paper 2 Revision</a>
+  <nav><a href="index.html">首页</a>
+<a href="viewer.html">原文跳转</a>
+<a href="01-richu-index.html" class="active">分段索引</a>
+<a href="05-evidence.html">例证路线</a>
+<a href="imagery.html">专题整理</a>
+<a href="paper2-overview.html">Paper 2</a>
+<a href="readme.html">工作说明</a></nav>
+</header>
+<main class="page">
+<h1 id="_1">文本索引：使用说明与标签表</h1>
+<blockquote>
+<p>目的：把《日出》《太阳照常升起》两篇全文切成可检索的段落，并为每段加上内容摘要、关键引文和标签。之后写论文、找例证时，先查本索引，再按行号回到原文，不必通读全文。</p>
+</blockquote>
+<h2 id="_2">一、文件结构</h2>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>00_使用说明与标签表.md</code></td>
+<td>本文件：标签体系、检索方法、覆盖范围</td>
+</tr>
+<tr>
+<td><code>01_日出_分段索引.md</code></td>
+<td>《日出》全文分段索引（序 + 四幕）</td>
+</tr>
+<tr>
+<td><code>02_太阳照常升起_分段索引.md</code></td>
+<td>《太阳照常升起》全文分段索引（卷首 + 三部·十九章）</td>
+</tr>
+<tr>
+<td><code>03_标签反查表.md</code></td>
+<td>由脚本从两份索引自动生成：每个标签对应哪些段号</td>
+</tr>
+<tr>
+<td><code>04_全文速查地图.md</code></td>
+<td>一页式情节/场景地图，按幕/章列出段号与一句话内容</td>
+</tr>
+<tr>
+<td><code>05_Paper2_例证路线.md</code></td>
+<td>按论点 A/B/C 和五个比较点整理的“最短例证链”，优先看这个</td>
+</tr>
+<tr>
+<td><code>../docs/</code></td>
+<td>GitHub Pages 网站：阅读器、首页、渲染后的索引/分析页</td>
+</tr>
+<tr>
+<td><code>_分段原稿/</code></td>
+<td>八个分册原稿（按幕/章拆分），供追溯；一般不用打开</td>
+</tr>
+<tr>
+<td><code>_build_tag_index.py</code></td>
+<td>校验覆盖/标签并生成 <code>03</code>、<code>04</code>（含行号/页码链接）</td>
+</tr>
+<tr>
+<td><code>_check_quotes.py</code></td>
+<td>核对索引引文能否在原文对应行找到</td>
+</tr>
+<tr>
+<td><code>_merge_index.py</code></td>
+<td>把分册原稿合并为 <code>01</code>、<code>02</code>，并补充论点标签</td>
+</tr>
+<tr>
+<td><code>../_build_site.py</code></td>
+<td>从 md/txt 生成 <code>../docs/</code> 网站</td>
+</tr>
+<tr>
+<td><code>页码映射_日出.tsv</code></td>
+<td>《日出》网页页码 → 起始行号，供跳转页使用</td>
+</tr>
+</tbody>
+</table>
+<p><strong>规模</strong>：《日出》118 段（L1–L5072）；《太阳照常升起》137 段（L1–L7448）；共 255 段、832 条引文、102 个标签。行号连续覆盖，无缺口。</p>
+<h2 id="_3">二、段号规则</h2>
+<ul>
+<li><code>R-序-01</code>：《日出》序·人物和场景</li>
+<li><code>R1-01</code>：《日出》第一幕第 01 段；<code>R2-</code>、<code>R3-</code>、<code>R4-</code> 同理</li>
+<li><code>S0-01</code>：《太阳照常升起》卷首资料/译者前言</li>
+<li><code>S1-01-01</code>：第一部第一章第 01 段；<code>S2-08-01</code>：第二部第八章第 01 段；<code>S3-19-01</code>：第三部第十九章第 01 段</li>
+<li>行号均指同目录下 <code>.txt</code> 文件的行号，格式如 <code>L1234</code>。引用前请用 <code>read</code> 或 <code>sed -n</code> 核对。</li>
+<li>页码：<code>01</code> 索引在每段标题下加 <code>**页码**：【第 N 页】</code>，按太玄书阁原网页页序标注（<code>00.htm</code> 的“序”未编号，记作“序页”；<code>01.htm</code>–<code>51.htm</code> 依次为第 1–51 页）。它与行号对应，但不是纸本页码；正式引用纸本时仍以纸本为准。</li>
+<li>页码：<code>02</code> 索引同样在每段标题下加 <code>**页码**：【第 N 页】</code>，按 <code>太阳照常升起.txt</code> 中的 <code>【第 N 页】</code> 标记（上海译文出版社 2011 年版 PDF 页序）标注。引用《太阳》例证时，页码与段号、行号一起写；<code>03</code>、<code>04</code> 也会自动带出页码。</li>
+</ul>
+<h2 id="_4">三、标签体系</h2>
+<p>标签分四组。每段 3—7 个，至少一个「主题」标签；有明显形式特征时加「写法」标签；特别适合写论文的段落加 <code>核心例证</code>。</p>
+<h3 id="a">A. 主题 / 母题</h3>
+<p><code>太阳/天亮</code> <code>光与暗</code> <code>金钱/账单</code> <code>阶级/贫富</code> <code>劳动/工作</code> <code>女性/被看</code> <code>男性凝视</code> <code>爱情/欲望</code> <code>婚姻/贞操</code> <code>性/身体</code> <code>身体残缺/创伤</code> <code>战争/战后</code> <code>酒/醉酒</code> <code>狂欢/节日</code> <code>跳舞/娱乐</code> <code>赌博/投机</code> <code>死亡/自杀</code> <code>疾病/衰老</code> <code>宗教/引文</code> <code>道德/罪与罚</code> <code>迷惘/虚无</code> <code>逃避/麻木</code> <code>孤独/无家</code> <code>回忆/过去</code> <code>自然/风景</code> <code>钓鱼/野外</code> <code>斗牛/暴力</code> <code>城市/旅馆</code> <code>旅行/流亡</code> <code>希望/幻灭</code> <code>命运/偶然</code> <code>亲情/家庭</code> <code>友谊</code> <code>权力/控制</code> <code>欺骗/谎言</code> <code>同情/残忍</code> <code>时间/日常</code></p>
+<h3 id="b">B. 人物</h3>
+<p><strong>《日出》</strong>：<code>陈白露</code> <code>方达生</code> <code>潘月亭</code> <code>李石清</code> <code>黄省三</code> <code>王福升</code> <code>顾八奶奶</code> <code>胡四</code> <code>张乔治</code> <code>小东西</code> <code>翠喜</code> <code>黑三</code> <code>金八</code> <code>李太太</code> <code>仆役/茶房</code> <code>打夯工人</code> <code>乞丐/流浪者</code></p>
+<p><strong>《太阳照常升起》</strong>：<code>杰克</code> <code>勃莱特</code> <code>科恩</code> <code>迈克</code> <code>比尔</code> <code>罗梅罗</code> <code>伯爵</code> <code>佐伊</code> <code>阿施利</code> <code>哈维</code> <code>蒙托亚</code> <code>酒店侍者</code> <code>妓女/舞女</code> <code>神父</code></p>
+<h3 id="c">C. 写法 / 形式</h3>
+<p><code>舞台说明</code> <code>灯光</code> <code>音响/鸡鸣</code> <code>空间/屋内窗外</code> <code>拉帐子</code> <code>道具</code> <code>服装/化妆</code> <code>动作/表演</code> <code>对白</code> <code>独白/自言自语</code> <code>沉默/停顿</code> <code>旁白/评论</code> <code>第一人称叙述</code> <code>对话体</code> <code>省略/留白</code> <code>重复/回环</code> <code>反讽</code> <code>象征</code> <code>引用/题词</code> <code>结构对照</code> <code>结尾/收束</code> <code>开头/起笔</code> <code>景物描写</code> <code>细节/数字</code> <code>节奏/长短句</code> <code>不可靠叙述</code> <code>视角/聚焦</code> <code>互文</code></p>
+<h3 id="d">D. 用途</h3>
+<p><code>核心例证</code> <code>次要例证</code> <code>人物介绍</code> <code>背景/过渡</code> <code>对比点：日出</code> <code>对比点：太阳</code> <code>论点A：日出未得救</code> <code>论点B：钱说与藏</code> <code>论点C：女人被看</code> <code>论点D：热闹之后</code> <code>论点E：看得见与省略</code> <code>备考引用</code></p>
+<h2 id="_5">四、怎么查</h2>
+<ol>
+<li><strong>先看论点路线</strong>：打开 <code>05_Paper2_例证路线.md</code>，按 A（太阳/得救）、B（钱）、C（女人被看）找现成的证据链。</li>
+<li><strong>按主题找例证</strong>：打开 <code>03_标签反查表.md</code>，搜 <code>金钱/账单</code>、<code>太阳/天亮</code>、<code>女性/被看</code> 等，得到段号。</li>
+<li><strong>按人物找段落</strong>：搜人物标签，如 <code>陈白露</code>、<code>勃莱特</code>。</li>
+<li><strong>按写法找段落</strong>：搜 <code>舞台说明</code>、<code>灯光</code>、<code>第一人称叙述</code>、<code>省略/留白</code>。</li>
+<li><strong>按论文论点找</strong>：搜 <code>论点A</code>—<code>论点E</code>（已按两个作品统一补齐）。</li>
+<li><strong>回到原文</strong>：按段号首行的 <code>L起—L止</code> 用 <code>sed -n '起,止p' 文件</code> 读取，或直接用 <code>read</code> 的 offset/limit。</li>
+<li><strong>点标签直接跳</strong>：索引里的 <code>L...</code> 和 <code>第...页</code> 都是链接，指向 <code>viewer.html?w=r&amp;l=...</code> / <code>viewer.html?w=s&amp;p=...</code>；网站和 Word 都能用。</li>
+</ol>
+<h2 id="_6">五、使用提醒</h2>
+<ul>
+<li>索引中的「摘要」是导航，不是论文措辞；引用一律以原文为准。</li>
+<li>标签是「可能相关」，不是「只能这样读」。一段多标签是正常的。</li>
+<li><code>核心例证</code> 表示该段同时具备：具体场景 + 可引原话 + 能支撑比较；不等于唯一正确答案。该标签较宽（255 段中约 140 段），找论文例证时优先用 <code>05_Paper2_例证路线.md</code>，再用它补充。</li>
+<li>《太阳照常升起》是译本，讨论语言时注意区分赵静男译文与英文原文。</li>
+<li>《日出》为网络整理本，个别字词可能有 OCR 讹误，正式引用请核对纸本。</li>
+</ul>
+</main>
+<footer class="site-footer">
+  <p>《日出》×《太阳照常升起》比较阅读资料库 · <a href="viewer.html">原文跳转</a> · <a href="index.html">首页</a></p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,31 @@
+
+.viewer-page { background:#faf8f3; }
+.viewer-header { position:sticky; top:0; z-index:20; display:flex; gap:.8rem 1rem; align-items:center;
+  flex-wrap:wrap; padding:.55rem 1rem; background:#fffdf8; border-bottom:1px solid #d8cfbf;
+  font-family:-apple-system,"PingFang SC",sans-serif; font-size:.9rem; }
+.viewer-header .brand { color:#6b4f1d; text-decoration:none; border-bottom:1px dotted #b9a06a; }
+.work-tabs { display:flex; gap:.3rem; }
+.work-tabs button { border:1px solid #d8cfbf; background:#f4ecd8; padding:.3rem .65rem; border-radius:4px; cursor:pointer; }
+.work-tabs button.active { background:#6b4f1d; color:#fff; border-color:#6b4f1d; }
+.viewer-header form { display:flex; gap:.3rem; margin-left:auto; }
+.viewer-header input { width:16rem; padding:.3rem .5rem; border:1px solid #d8cfbf; border-radius:4px; background:#fff; font-size:.85rem; }
+.viewer-header button[type=submit] { padding:.3rem .7rem; border:1px solid #d8cfbf; border-radius:4px; background:#f4ecd8; cursor:pointer; }
+.reader { max-width:64rem; margin:0 auto; padding:.5rem 1.2rem 5rem; }
+.reader h1 { font-size:1.45rem; margin:1rem 0 .5rem; border-bottom:2px solid #d8cfbf; padding-bottom:.35rem; }
+.reader .meta { color:#8a8175; font-size:.82rem; margin-bottom:.8rem; }
+.pagebreak { margin:1.5rem 0 .5rem; padding-top:.35rem; border-top:1px dashed #c9b98a; color:#8a6d3b;
+  font-size:.82rem; scroll-margin-top:4.5rem; font-family:-apple-system,"PingFang SC",sans-serif; }
+.line { display:flex; gap:.9rem; padding:.02rem 0; scroll-margin-top:4.5rem; border-radius:3px; }
+.line .ln { flex:0 0 3.5rem; width:3.5rem; text-align:right; color:#b0a695; text-decoration:none;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.76rem; padding-top:.35rem; }
+.line .ln:hover { color:#6b4f1d; text-decoration:underline; }
+.line .txt { flex:1; white-space:pre-wrap; word-break:break-word; }
+.line:target,.line.found,.pagebreak:target { background:#fff1a8; box-shadow:0 0 0 2px #fff1a8; }
+.loading,.error { padding:2rem 1rem; color:#8a8175; }
+.error { color:#9b2c2c; }
+@media (max-width:640px) {
+  .viewer-header form { width:100%; margin-left:0; }
+  .viewer-header input { flex:1; width:auto; }
+  .reader { padding:0 .7rem 4rem; }
+  .line .ln { flex-basis:2.6rem; width:2.6rem; }
+}

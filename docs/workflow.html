@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>索引工作流（分享版）｜Chinese Paper 2 Revision</title>
+<meta name="description" content="索引工作流（分享版）｜《日出》与《太阳照常升起》比较阅读">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html">Chinese Paper 2 Revision</a>
+  <nav><a href="index.html">首页</a>
+<a href="viewer.html">原文跳转</a>
+<a href="01-richu-index.html">分段索引</a>
+<a href="05-evidence.html">例证路线</a>
+<a href="imagery.html">专题整理</a>
+<a href="paper2-overview.html">Paper 2</a>
+<a href="readme.html" class="active">工作说明</a></nav>
+</header>
+<main class="page">
+<h1 id="pdf">两份文本的比较阅读索引：从 PDF 到可检索笔记（分享版）</h1>
+<blockquote>
+<p>这是一份可以整套照做的工作流：把两篇作品（小说、戏剧、散文、诗集都行）从 PDF 变成 txt，再切成带摘要、引文和标签的段落索引，最后整理成写论文时真正用得上的“例证路线”。</p>
+<p>适合：比较文学论文、IB 中文/英文 A、课堂报告、读书会、任何需要反复回到原文的写作。</p>
+<p>不适合：只想随便读读、不需要引用原文的场景。那直接读原文就好。</p>
+</blockquote>
+<hr />
+<h2 id="0">0. 先看全貌</h2>
+<p>整套东西其实只有五步：</p>
+<pre><code class="language-text">PDF
+ ↓  转文字、清洗
+txt（原文，不改）
+ ↓  切段、写摘要、贴标签
+分段索引（每段有段号、行号、摘要、引文、标签）
+ ↓  自动校验 + 生成反查表
+标签反查表 + 全文速查地图
+ ↓  按论文论点挑段子
+例证路线（写论文时先看这个）
+</code></pre>
+<p>如果你手里已经有可靠的 txt，可以直接从第 3 节开始；第 2 节是给只有 PDF 的人准备的。</p>
+<p>最后你会得到这些文件：</p>
+<pre><code class="language-text">my-project/
+├─ README.md                 ← 给“下一次的自己/AI”看的工作说明
+├─ INDEX.md                  ← 总导航
+├─ 原文/
+│  ├─ A.txt
+│  └─ B.txt
+├─ 索引/
+│  ├─ index_A.md             ← A 的分段索引
+│  ├─ index_B.md             ← B 的分段索引
+│  ├─ tag_index.md           ← 标签反查表（自动生成）
+│  └─ map.md                 ← 全文速查地图（自动生成）
+├─ 例证路线.md                ← 按论点整理好的“最短证据链”
+├─ 参考文献/
+│  └─ ...
+└─ tools.py                  ← 校验和生成用的小脚本（可选）
+</code></pre>
+<p>最重要的一条原则：</p>
+<blockquote>
+<p><strong>索引是地图，不是原文。</strong> 摘要只负责导航；引用一定回到 txt 逐字核对。</p>
+</blockquote>
+<hr />
+<h2 id="1">1. 建文件夹，先别急着读</h2>
+<p>建议一开始就把“原文”和“整理结果”分开：</p>
+<pre><code class="language-text">my-project/
+├─ 原文/          ← PDF 和转出来的 txt，尽量只读不改
+├─ 索引/          ← 分段索引、标签表、地图
+├─ 参考文献/      ← 论文、书评、背景资料
+├─ README.md
+└─ INDEX.md
+</code></pre>
+<p>文件名用你能一眼认出的名字，例如：</p>
+<ul>
+<li><code>日出.txt</code>、<code>太阳照常升起.txt</code></li>
+<li>或 <code>textA.txt</code>、<code>textB.txt</code>（如果你不想被作品名影响判断）</li>
+</ul>
+<p>如果两篇文本版本不同，把版本写进文件名或 README：</p>
+<ul>
+<li><code>日出_1936初版.txt</code></li>
+<li><code>日出_1951修订版.txt</code></li>
+<li><code>太阳_赵静男译本_2011.txt</code></li>
+</ul>
+<p><strong>为什么要记版本？</strong> 同一部作品不同版本，人物、台词、结尾都可能不一样。论文里要能说清“我依据的是哪一版”。</p>
+<hr />
+<h2 id="2-pdf-txt">2. PDF 转 txt</h2>
+<h3 id="21">2.1 先判断：文字版还是扫描版？</h3>
+<p>在终端里试一下：</p>
+<pre><code class="language-bash">pdftotext -layout 原文/A.pdf 原文/A_test.txt
+wc -c 原文/A_test.txt
+</code></pre>
+<ul>
+<li>如果 txt 有几万、几十万字节，打开能读到正常句子：多半是<strong>文字版</strong>。</li>
+<li>如果 txt 很小、几乎空白，或者全是乱码：多半是<strong>扫描版</strong>，需要 OCR。</li>
+</ul>
+<p>也可以看 PDF 有没有嵌入字体：</p>
+<pre><code class="language-bash">pdffonts 原文/A.pdf
+</code></pre>
+<p>有字体列表，通常是文字版；没有，可能是扫描图片。</p>
+<h3 id="22-pdftotext">2.2 文字版：pdftotext</h3>
+<p>macOS 先装 poppler：</p>
+<pre><code class="language-bash">brew install poppler
+</code></pre>
+<p>Linux：</p>
+<pre><code class="language-bash">sudo apt install poppler-utils
+</code></pre>
+<p>Windows：下载 poppler for Windows，把 <code>bin</code> 加进 PATH。</p>
+<p>转换命令：</p>
+<pre><code class="language-bash">pdftotext -layout -enc UTF-8 原文/A.pdf 原文/A_raw.txt
+</code></pre>
+<p><code>-layout</code> 会尽量保留页面排版，适合有分栏、脚注、剧本格式的 PDF。如果转出来行被切得很碎，可以试试不加 <code>-layout</code>：</p>
+<pre><code class="language-bash">pdftotext -enc UTF-8 原文/A.pdf 原文/A_raw.txt
+</code></pre>
+<p>哪种读起来顺，就用哪种。不要两种混着用，否则行号会对不上。</p>
+<h3 id="23-ocr">2.3 扫描版：OCR</h3>
+<p>先装 OCRmyPDF 和中文语言包：</p>
+<pre><code class="language-bash">brew install ocrmypdf tesseract-lang
+# 或 Linux: sudo apt install ocrmypdf tesseract-ocr tesseract-ocr-chi-sim
+</code></pre>
+<p>加一层文字，再转 txt：</p>
+<pre><code class="language-bash">ocrmypdf -l chi_sim+eng --deskew --clean 原文/A.pdf 原文/A_ocr.pdf
+pdftotext -layout -enc UTF-8 原文/A_ocr.pdf 原文/A_raw.txt
+</code></pre>
+<p>英文书把 <code>chi_sim+eng</code> 换成 <code>eng</code> 即可。其他语言换成对应的 tesseract 语言代码。</p>
+<p>如果 OCR 效果不好：</p>
+<ul>
+<li>先确认扫描分辨率够不够（一般 300 dpi 以上）。</li>
+<li>不要过度 <code>--clean</code>，有时会把细笔画弄掉。</li>
+<li>重要引文一定回 PDF 对照，OCR 错字很常见。</li>
+</ul>
+<h3 id="24-python">2.4 Python 备用方案</h3>
+<p>如果不想装命令行工具，可以用 PyMuPDF：</p>
+<pre><code class="language-bash">pip install pymupdf
+</code></pre>
+<pre><code class="language-python">import fitz  # PyMuPDF
+
+pdf_path = &quot;原文/A.pdf&quot;
+out_path = &quot;原文/A_raw.txt&quot;
+
+doc = fitz.open(pdf_path)
+with open(out_path, &quot;w&quot;, encoding=&quot;utf-8&quot;) as f:
+    for i, page in enumerate(doc, start=1):
+        f.write(f&quot;\n【第 {i} 页】\n\n&quot;)
+        f.write(page.get_text(&quot;text&quot;))
+        f.write(&quot;\n&quot;)
+</code></pre>
+<p>这个脚本会把每页文字按顺序写出来，并保留页码标记。扫描版 PDF 用这个通常只能拿到空白或图片，还是得先 OCR。</p>
+<h3 id="25">2.5 清洗：保留结构，别把原文洗没了</h3>
+<p>转出来的 txt 通常有几类问题：</p>
+<ol>
+<li><strong>页眉页脚重复</strong>：书名、章节名、页码反复出现。</li>
+<li><strong>断行</strong>：一句话被切成好几行。</li>
+<li><strong>连字符</strong>：英文单词被拆成 <code>under-</code> / <code>standing</code>。</li>
+<li><strong>乱码/异体字</strong>：OCR 常见。</li>
+<li><strong>脚注混进正文</strong>：脚注编号和正文交错。</li>
+</ol>
+<p>处理建议：</p>
+<ul>
+<li>用查找替换删掉重复页眉页脚，但<strong>保留页码标记</strong>（如 <code>【第 12 页】</code>），方便回查。</li>
+<li>段落之间保留空行；不要把整本书合成一大段。</li>
+<li>英文连字符断词可以合并，但先确认不是真正的连字符词。</li>
+<li>不要“顺手改写”原文句子。清洗只处理格式，不改内容。</li>
+<li>清洗前后各存一份：<code>A_raw.txt</code>（原始转换）和 <code>A.txt</code>（清洗后工作文本）。</li>
+</ul>
+<p>清洗后做一次快速验收：</p>
+<pre><code class="language-bash">wc -l 原文/A.txt
+head -40 原文/A.txt
+tail -40 原文/A.txt
+grep -n -E '第[一二三四五六七八九十]+章|CHAPTER|第[一二三四五六七八九十]+幕|ACT' 原文/A.txt | head -40
+</code></pre>
+<p>再搜一句你确定原文里有的句子，确认能搜到：</p>
+<pre><code class="language-bash">grep -n '一句你记得的原文' 原文/A.txt
+</code></pre>
+<p>如果章节标记不全、最后一页缺失、关键词搜不到，先别往下做索引。<strong>文本不完整，后面的索引全都会歪。</strong></p>
+<h3 id="26">2.6 给原文加“页码/章节锚点”</h3>
+<p>建议保留两种锚点：</p>
+<ul>
+<li>页：<code>【第 12 页】</code></li>
+<li>章/幕：<code>第一章</code>、<code>第一幕</code>、<code>CHAPTER 1</code></li>
+</ul>
+<p>这样索引里的行号之外，你还能说“第一幕”“第三章第二节”，即使别人用的版本页码不同，也能找到大致位置。</p>
+<h3 id="27">2.7 把行号/页码做成可点击的跳转</h3>
+<p>纯 <code>.txt</code> 没有 HTML 锚点，点 <code>L123</code> 不会自动滚动。最简单的做法是做一个小型<strong>原文阅读器</strong>：只保留一份 txt，用 JavaScript 在浏览器里生成行号，再用查询参数定位。</p>
+<pre><code class="language-text">viewer.html?w=r&amp;l=123      A 作品第 123 行
+viewer.html?w=r&amp;p=12       A 作品第 12 页
+viewer.html?w=s&amp;l=7418     B 作品第 7418 行
+viewer.html?w=s&amp;p=208      B 作品第 208 页
+</code></pre>
+<p>索引里写普通 Markdown 链接：</p>
+<pre><code class="language-markdown">[L123](https://example.github.io/repo/viewer.html?w=r&amp;l=123)
+[第 12 页](https://example.github.io/repo/viewer.html?w=r&amp;p=12)
+[L7418–L7425](https://example.github.io/repo/viewer.html?w=s&amp;l=7418)
+[第 208 页](https://example.github.io/repo/viewer.html?w=s&amp;p=208)
+</code></pre>
+<ul>
+<li><code>w=r</code> / <code>w=s</code> 是两部作品的代号；只整理一部时可以省略。</li>
+<li><code>l=</code> 是行号，<code>p=</code> 是页码；行号链接指向起始行即可，跨行引文不用给每一行都做链接。</li>
+<li>页码链接指向该页第一行；没有页标记的 txt，先做一份“页码 → 起始行”的 TSV，再生成页码锚点。</li>
+<li>注意：<strong>引文内部</strong>的“第 14 页”不要加链接，否则会把原文引文改成导航文字。</li>
+<li>用完整的 HTTPS 链接（而不是本地文件 + <code>#锚点</code>）可以避开 Word / Markdown 预览丢 <code>#</code> 的问题。</li>
+</ul>
+<p>阅读器的核心很小：fetch txt，按行生成 <code>&lt;div class="line" id="L123"&gt;</code>，页面加载后按 <code>?l=</code> 或 <code>?p=</code> 滚动到对应元素。完整实现见本文件夹的 <code>_build_site.py</code>（生成站点）和 <code>docs/assets/viewer.js</code>（阅读器）。改完 txt 后重跑：</p>
+<pre><code class="language-bash">python3 _build_site.py
+</code></pre>
+<p>站点输出到 <code>docs/</code>，可以直接交给 GitHub Pages 托管。</p>
+<hr />
+<h2 id="3">3. 切段与贴标签</h2>
+<p>先提醒一句：<strong>不要跳过 PDF→txt，直接让 AI 读 PDF 来做索引。</strong> PDF 的文字顺序经常是乱的，AI 很容易把页眉、脚注、分栏混在一起，甚至凭印象补出原文没有的句子。先把文字提出来，再让 AI 读 txt。</p>
+<h3 id="31">3.1 先定段号和粒度</h3>
+<p>不要按固定行数机械切。按<strong>场景、谈话回合、人物上下场、时间地点转换</strong>切。</p>
+<ul>
+<li>戏剧：一场戏、一次上下场、一个完整的谈话回合，大约 30–80 行。</li>
+<li>小说：一个场景、一次对话、一段行动，大约 40–100 行。</li>
+<li>诗歌：一节、一个完整的意象单元，可以更短。</li>
+<li>散文：一个自然段群或一个论述转折。</li>
+</ul>
+<p>段号建议：</p>
+<pre><code class="language-text">A1-01       A 的第一部/第一幕第 1 段
+A2-03-02    A 的第二部第三章第 2 段
+B-序-01     B 的序言/卷首第 1 段
+</code></pre>
+<p>规则越简单越好。后面的 session 只要看到 <code>A1-01</code>，就知道去 <code>index_A.md</code> 搜。</p>
+<h3 id="32">3.2 每段写什么</h3>
+<p>每段固定四行：</p>
+<pre><code class="language-markdown">### A1-01｜L12–L48｜第一章：开场与人物登场
+**内容**：2–4 句。谁在场、发生了什么、这段在结构上做什么。不要只写“两人交谈”。
+**关键引文**：
+- L20：“逐字引文，必要时用……省略。”
+- L35：“第二句引文。”
+**标签**：`主题标签` `人物标签` `写法标签` `用途标签`
+</code></pre>
+<p>几个硬要求：</p>
+<ol>
+<li><strong>摘要要具体</strong>：谁对谁说了什么、钱数、动作、道具、灯光、地点。不要写“表现了人物复杂的内心”这种空话。</li>
+<li><strong>引文必须逐字</strong>：从 txt 复制，不要凭记忆写。长引文只截关键 20–60 字，用 <code>……</code> 表示省略。</li>
+<li><strong>每段 1–4 条引文</strong>：优先选能支撑论文的句子，不要把所有好句子都堆上去。</li>
+<li><strong>标签 3–7 个</strong>：至少一个主题标签；有形式特征就加写法标签；特别有用的段落加 <code>核心例证</code>。</li>
+<li><strong>不确定就多贴一个相关标签</strong>：宁可多看一眼，也不要漏掉关键例证。但不要把整张标签表都贴到一段上。</li>
+</ol>
+<h3 id="33">3.3 标签表：四组就够</h3>
+<p>不要一开始就发明几十个标签。先建四组，后面不够再加。</p>
+<p><strong>A. 主题/母题</strong></p>
+<pre><code class="language-text">太阳/天亮  光与暗  金钱/账单  阶级/贫富  劳动/工作
+女性/被看  男性凝视  爱情/欲望  婚姻/贞操  性/身体
+身体残缺/创伤  战争/战后  酒/醉酒  狂欢/节日  跳舞/娱乐
+死亡/自杀  疾病/衰老  宗教/引文  道德/罪与罚  迷惘/虚无
+逃避/麻木  孤独/无家  回忆/过去  自然/风景  钓鱼/野外
+斗牛/暴力  城市/旅馆  旅行/流亡  希望/幻灭  命运/偶然
+亲情/家庭  友谊  权力/控制  欺骗/谎言  同情/残忍  时间/日常
+</code></pre>
+<p><strong>B. 人物</strong></p>
+<p>每个主要人物一个标签。次要人物只在真的反复出现时加。</p>
+<p><strong>C. 写法/形式</strong></p>
+<pre><code class="language-text">舞台说明  灯光  音响/鸡鸣  空间/屋内窗外  拉帐子  道具
+服装/化妆  动作/表演  对白  独白/自言自语  沉默/停顿
+旁白/评论  第一人称叙述  对话体  省略/留白  重复/回环
+反讽  象征  引用/题词  结构对照  结尾/收束  开头/起笔
+景物描写  细节/数字  节奏/长短句  不可靠叙述  视角/聚焦  互文
+</code></pre>
+<p><strong>D. 用途</strong></p>
+<pre><code class="language-text">核心例证  次要例证  人物介绍  背景/过渡
+对比点：A  对比点：B
+论点A  论点B  论点C  论点D  论点E
+备考引用
+</code></pre>
+<p>如果你写的是两部小说，就把 <code>舞台说明</code>、<code>灯光</code>、<code>拉帐子</code> 这类戏剧标签删掉；如果两部都是戏剧，就保留并加 <code>出场/退场</code>、<code>观众所知</code>。<strong>标签表要跟着文本类型改。</strong></p>
+<h3 id="34-ai">3.4 用 AI 批量做：一次处理一幕/一章</h3>
+<p>不要一次性把整本 7000 行丢给 AI 让它“全部整理”。分段质量会下降，而且很容易漏段。按幕/章切块，一次处理一块。</p>
+<p>下面是一段可以直接改的 prompt：</p>
+<pre><code class="language-text">你在为一篇比较文学论文建立文本索引。工作目录：&lt;你的目录&gt;
+
+先读 &lt;标签表文件名&gt;，严格遵守其中的段号规则和标签表。标签必须从表里选，
+不要自创。不要修改原文 txt。
+
+任务：通读 &lt;文件名&gt; 的第 &lt;起&gt;–&lt;止&gt; 行，为全部内容建立分段索引。
+
+要求：
+1. 按场景/谈话回合/人物上下场/时间地点转换切分，不要机械按行数切。
+   每段大约 30–80 行（小说可 40–100 行）；重要段落可更短。
+2. 必须从 L&lt;起&gt; 连续覆盖到 L&lt;止&gt;，不留缺口、不重叠。
+3. 段号用 &lt;前缀&gt;-01、&lt;前缀&gt;-02……按顺序编号。每章/每幕开头加一行
+   `## 第X章（L起–L止）` 和一句本章概括。
+4. 每段格式严格如下：
+
+### &lt;段号&gt;｜L&lt;起&gt;–L&lt;止&gt;｜&lt;短标题&gt;
+**内容**：2–4 句，写清谁在场、发生了什么、这段在结构上做什么。
+**关键引文**：
+- L&lt;行号&gt;：“&lt;逐字引文&gt;”
+**标签**：`标签1` `标签2` `标签3` `标签4`
+
+5. 标签每段 3–7 个。至少一个主题标签；有形式特征就加写法标签；
+   对论文特别有用的段落加 `核心例证`。
+6. 引文必须逐字准确，保留原文标点；长引文只截 20–60 字，用“……”省略。
+   不要写你“记得”的句子，必须从原文复制。
+7. 摘要要具体：谁对谁说了什么、钱数、动作、道具、灯光/声音变化。
+8. 文件开头写覆盖范围和段号；文件结尾写「覆盖核对」表：
+   段号 | 起止行 | 一句话内容；最后注明“连续覆盖，无缺口”。
+
+用 write 工具把结果写入：&lt;输出文件路径&gt;
+完成后只回复：文件路径、段数、覆盖行数、最重要的 5 个段号。
+</code></pre>
+<p>如果你用的 AI 支持子任务/并行，可以按幕/章拆成几个子任务同时做；最后合并成一个 <code>index_A.md</code>。合并时注意：</p>
+<ul>
+<li>每块的段号连续；</li>
+<li>不要重复章标题；</li>
+<li>合并后重新跑一次覆盖校验（见下一节）。</li>
+</ul>
+<h3 id="35">3.5 不要做的事</h3>
+<ul>
+<li>不要把整段原文抄进索引。索引应该是“摘要 + 少量引文”，不是第二份全文。</li>
+<li>不要用 AI 的“记忆”写引文。AI 很会编看起来很像的句子。</li>
+<li>不要为了凑标签，把每段都贴成 <code>核心例证</code>。这个标签一多，就失去筛选作用。</li>
+<li>不要跳过卷首、目录、译者前言、注释。它们可能包含题词、版本信息、作者说明，写论文时很有用。</li>
+</ul>
+<hr />
+<h2 id="4">4. 校验：覆盖 + 引文</h2>
+<p>索引做完后，先别急着写论文。做两件事：</p>
+<h3 id="41">4.1 覆盖校验</h3>
+<p>检查：</p>
+<ul>
+<li>第一段是否从 L1（或你设定的起点）开始；</li>
+<li>最后一段是否到文件末；</li>
+<li>相邻段之间有没有缺口或重叠；</li>
+<li>有没有重复段号；</li>
+<li>有没有段落没有标签。</li>
+</ul>
+<h3 id="42">4.2 引文校验</h3>
+<p>把每条 <code>- L123：“……”</code> 的引文拿到原文对应行附近搜索。允许两种偏差：</p>
+<ul>
+<li>引文用 <code>……</code> 省略了中间部分；</li>
+<li>引文跨了一两行。</li>
+</ul>
+<p>如果搜不到，可能是：</p>
+<ol>
+<li>引文不是逐字（AI 改写了）；</li>
+<li>行号标错；</li>
+<li>原文有 OCR 错字；</li>
+<li>引文跨了多行，需要放宽搜索窗口。</li>
+</ol>
+<h3 id="43">4.3 一个通用小脚本</h3>
+<p>把下面存成 <code>tools.py</code>，放在项目根目录。先改最上面的 <code>BOOKS</code> 和 <code>TAG_GROUPS</code>，然后运行：</p>
+<pre><code class="language-bash">mkdir -p 索引
+python3 tools.py check   # 校验覆盖、标签、引文
+python3 tools.py tags    # 生成 tag_index.md
+python3 tools.py map     # 生成 map.md
+</code></pre>
+<p>如果不想跑脚本，也可以把索引和原文交给 AI，让它逐段检查“有没有缺口、引文能不能在原文找到”。但 AI 会漏，重要项目还是建议跑一遍脚本。</p>
+<pre><code class="language-python">#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+&quot;&quot;&quot;两份文本索引的校验与反查表生成。先改 BOOKS 和 TAG_GROUPS。&quot;&quot;&quot;
+import re
+import os
+import sys
+from collections import defaultdict, OrderedDict
+
+# ===== 你要改的地方 =====
+BOOKS = [
+    # name: 作品简称；src: 原文 txt；index: 分段索引 md；start/end: 全文行号范围
+    {&quot;name&quot;: &quot;A&quot;, &quot;src&quot;: &quot;原文/A.txt&quot;, &quot;index&quot;: &quot;索引/index_A.md&quot;, &quot;start&quot;: 1, &quot;end&quot;: 5000},
+    {&quot;name&quot;: &quot;B&quot;, &quot;src&quot;: &quot;原文/B.txt&quot;, &quot;index&quot;: &quot;索引/index_B.md&quot;, &quot;start&quot;: 1, &quot;end&quot;: 8000},
+]
+
+TAG_GROUPS = OrderedDict([
+    (&quot;主题 / 母题&quot;, [&quot;太阳/天亮&quot;, &quot;光与暗&quot;, &quot;金钱/账单&quot;, &quot;阶级/贫富&quot;, &quot;劳动/工作&quot;,
+                    &quot;女性/被看&quot;, &quot;男性凝视&quot;, &quot;爱情/欲望&quot;, &quot;婚姻/贞操&quot;, &quot;性/身体&quot;,
+                    &quot;身体残缺/创伤&quot;, &quot;战争/战后&quot;, &quot;酒/醉酒&quot;, &quot;狂欢/节日&quot;, &quot;跳舞/娱乐&quot;,
+                    &quot;死亡/自杀&quot;, &quot;疾病/衰老&quot;, &quot;宗教/引文&quot;, &quot;道德/罪与罚&quot;, &quot;迷惘/虚无&quot;,
+                    &quot;逃避/麻木&quot;, &quot;孤独/无家&quot;, &quot;回忆/过去&quot;, &quot;自然/风景&quot;, &quot;钓鱼/野外&quot;,
+                    &quot;斗牛/暴力&quot;, &quot;城市/旅馆&quot;, &quot;旅行/流亡&quot;, &quot;希望/幻灭&quot;, &quot;命运/偶然&quot;,
+                    &quot;亲情/家庭&quot;, &quot;友谊&quot;, &quot;权力/控制&quot;, &quot;欺骗/谎言&quot;, &quot;同情/残忍&quot;, &quot;时间/日常&quot;]),
+    (&quot;人物&quot;, [&quot;人物A&quot;, &quot;人物B&quot;, &quot;人物C&quot;]),
+    (&quot;写法 / 形式&quot;, [&quot;舞台说明&quot;, &quot;灯光&quot;, &quot;音响/鸡鸣&quot;, &quot;空间/屋内窗外&quot;, &quot;拉帐子&quot;, &quot;道具&quot;,
+                    &quot;服装/化妆&quot;, &quot;动作/表演&quot;, &quot;对白&quot;, &quot;独白/自言自语&quot;, &quot;沉默/停顿&quot;,
+                    &quot;旁白/评论&quot;, &quot;第一人称叙述&quot;, &quot;对话体&quot;, &quot;省略/留白&quot;, &quot;重复/回环&quot;,
+                    &quot;反讽&quot;, &quot;象征&quot;, &quot;引用/题词&quot;, &quot;结构对照&quot;, &quot;结尾/收束&quot;, &quot;开头/起笔&quot;,
+                    &quot;景物描写&quot;, &quot;细节/数字&quot;, &quot;节奏/长短句&quot;, &quot;不可靠叙述&quot;, &quot;视角/聚焦&quot;, &quot;互文&quot;]),
+    (&quot;用途&quot;, [&quot;核心例证&quot;, &quot;次要例证&quot;, &quot;人物介绍&quot;, &quot;背景/过渡&quot;,
+             &quot;对比点：A&quot;, &quot;对比点：B&quot;, &quot;论点A&quot;, &quot;论点B&quot;, &quot;论点C&quot;, &quot;论点D&quot;, &quot;论点E&quot;]),
+])
+# =======================
+
+SEG_RE = re.compile(r&quot;^###\s+([^\s｜]+)｜L(\d+)[–\-]L?(\d+)｜(.+?)\s*$&quot;)
+TAG_RE = re.compile(r&quot;^\*\*标签\*\*[：:]\s*(.+)$&quot;)
+QUOTE_RE = re.compile(r&quot;^-\s*L(\d+)[：:]\s*(.+)$&quot;)
+QUOTES = &quot;“”‘’「」『』\&quot;'《》〈〉&quot;
+
+def norm(s):
+    s = re.sub(r&quot;…+&quot;, &quot;&quot;, s)
+    s = re.sub(r&quot;[\s&quot; + QUOTES + &quot;]&quot;, &quot;&quot;, s)
+    return s
+
+def parse_index(path):
+    segs, cur = [], None
+    for line in open(path, encoding=&quot;utf-8&quot;):
+        line = line.rstrip(&quot;\n&quot;)
+        m = SEG_RE.match(line)
+        if m:
+            if cur:
+                segs.append(cur)
+            cur = {&quot;id&quot;: m.group(1), &quot;start&quot;: int(m.group(2)), &quot;end&quot;: int(m.group(3)),
+                   &quot;title&quot;: m.group(4), &quot;tags&quot;: [], &quot;quotes&quot;: []}
+            continue
+        if not cur:
+            continue
+        m = TAG_RE.match(line)
+        if m:
+            cur[&quot;tags&quot;] = re.findall(r&quot;`([^`]+)`&quot;, m.group(1))
+            continue
+        m = QUOTE_RE.match(line)
+        if m:
+            cur[&quot;quotes&quot;].append((int(m.group(1)), m.group(2)))
+    if cur:
+        segs.append(cur)
+    return segs
+
+def check():
+    allowed = {t for tags in TAG_GROUPS.values() for t in tags}
+    all_errors = []
+    for book in BOOKS:
+        segs = parse_index(book[&quot;index&quot;])
+        src = open(book[&quot;src&quot;], encoding=&quot;utf-8&quot;).read().splitlines()
+        name = book[&quot;name&quot;]
+        print(f&quot;\n[{name}] 段数：{len(segs)}&quot;)
+        if not segs:
+            all_errors.append(f&quot;{name}: 没有解析到任何段&quot;)
+            continue
+        if segs[0][&quot;start&quot;] != book[&quot;start&quot;]:
+            all_errors.append(f&quot;{name}: 首段起于 L{segs[0]['start']}，应为 L{book['start']}&quot;)
+        if segs[-1][&quot;end&quot;] != book[&quot;end&quot;]:
+            all_errors.append(f&quot;{name}: 末段止于 L{segs[-1]['end']}，应为 L{book['end']}&quot;)
+        prev = None
+        ids = set()
+        for s in segs:
+            if s[&quot;id&quot;] in ids:
+                all_errors.append(f&quot;{s['id']}: 重复段号&quot;)
+            ids.add(s[&quot;id&quot;])
+            if s[&quot;end&quot;] &lt; s[&quot;start&quot;]:
+                all_errors.append(f&quot;{s['id']}: 起止行颠倒&quot;)
+            if prev:
+                if s[&quot;start&quot;] == prev[&quot;end&quot;] + 1:
+                    pass
+                elif s[&quot;start&quot;] &lt;= prev[&quot;end&quot;]:
+                    all_errors.append(f&quot;{s['id']}: 与 {prev['id']} 重叠&quot;)
+                else:
+                    all_errors.append(
+                        f&quot;{s['id']}: 与 {prev['id']} 之间有缺口 &quot;
+                        f&quot;L{prev['end'] + 1}–L{s['start'] - 1}&quot;)
+            if not s[&quot;tags&quot;]:
+                all_errors.append(f&quot;{s['id']}: 无标签&quot;)
+            bad = [t for t in s[&quot;tags&quot;] if t not in allowed]
+            if bad:
+                all_errors.append(f&quot;{s['id']}: 未登记标签 {bad}&quot;)
+            prev = s
+        # 引文
+        for s in segs:
+            for lineno, quote in s[&quot;quotes&quot;]:
+                parts = [p for p in re.split(r&quot;…+&quot;, quote) if norm(p)]
+                window = norm(&quot;&quot;.join(src[max(0, lineno - 2):lineno + 2]))
+                miss = [p for p in parts if norm(p) not in window]
+                if miss:
+                    window2 = norm(&quot;&quot;.join(src[max(0, lineno - 10):lineno + 9]))
+                    miss2 = [p for p in parts if norm(p) not in window2]
+                    if miss2:
+                        all_errors.append(
+                            f&quot;{s['id']} L{lineno}: 引文找不到：{miss2[0][:30]}&quot;)
+                    else:
+                        all_errors.append(
+                            f&quot;{s['id']} L{lineno}: 引文不在标注行，但在前后 10 行内&quot;)
+    print(f&quot;\n错误：{len(all_errors)}&quot;)
+    for e in all_errors:
+        print(&quot;  ✗&quot;, e)
+    return len(all_errors) == 0
+
+def write_tags():
+    by_tag = defaultdict(list)
+    for book in BOOKS:
+        for s in parse_index(book[&quot;index&quot;]):
+            for t in s[&quot;tags&quot;]:
+                by_tag[t].append((book[&quot;name&quot;], s))
+    out = [&quot;# 标签反查表&quot;, &quot;&quot;, &quot;&gt; 由 tools.py 自动生成。&quot;, &quot;&quot;]
+    for gname, tags in TAG_GROUPS.items():
+        out += [f&quot;## {gname}&quot;, &quot;&quot;]
+        for t in tags:
+            items = by_tag.get(t, [])
+            if not items:
+                continue
+            out.append(f&quot;### `{t}`（{len(items)} 段）&quot;)
+            for name, s in items:
+                out.append(
+                    f&quot;- **{s['id']}** {s['title']}（{name}，L{s['start']}–L{s['end']}）&quot;)
+            out.append(&quot;&quot;)
+    open(&quot;索引/tag_index.md&quot;, &quot;w&quot;, encoding=&quot;utf-8&quot;).write(&quot;\n&quot;.join(out))
+    print(&quot;已生成 索引/tag_index.md&quot;)
+
+def write_map():
+    out = [&quot;# 全文速查地图&quot;, &quot;&quot;, &quot;&gt; 由 tools.py 自动生成。&quot;, &quot;&quot;]
+    for book in BOOKS:
+        out += [f&quot;# {book['name']}&quot;, &quot;&quot;]
+        for s in parse_index(book[&quot;index&quot;]):
+            out.append(
+                f&quot;- **{s['id']}**（L{s['start']}–L{s['end']}）{s['title']}  \n&quot;
+                f&quot;  {' '.join('`' + t + '`' for t in s['tags'])}&quot;)
+        out.append(&quot;&quot;)
+    open(&quot;索引/map.md&quot;, &quot;w&quot;, encoding=&quot;utf-8&quot;).write(&quot;\n&quot;.join(out))
+    print(&quot;已生成 索引/map.md&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    cmd = sys.argv[1] if len(sys.argv) &gt; 1 else &quot;check&quot;
+    if cmd == &quot;check&quot;:
+        sys.exit(0 if check() else 1)
+    elif cmd == &quot;tags&quot;:
+        write_tags()
+    elif cmd == &quot;map&quot;:
+        write_map()
+    else:
+        print(&quot;用法：python3 tools.py [check|tags|map]&quot;)
+</code></pre>
+<p>这个脚本不完美，但能抓住最常见的错误：缺段、重叠、标签拼错、引文对不上。<strong>先把 <code>BOOKS</code> 里的路径和行号范围改成你的，再跑。</strong></p>
+<p>如果 <code>check</code> 报“未登记标签”，要么把标签改成表里已有的，要么把新标签补进 <code>TAG_GROUPS</code>；否则 <code>tags</code> 生成的反查表会漏掉它。</p>
+<hr />
+<h2 id="5">5. 回头做一份“例证路线”</h2>
+<p>索引是“按原文顺序”排的；写论文时你需要的是“按论点”排的。所以再做一个 <code>例证路线.md</code>。</p>
+<h3 id="51">5.1 先定三个可写的论点</h3>
+<p>不要写“两部作品都表达了……”。选一个具体问题：</p>
+<ul>
+<li>太阳升起时，人物在哪里、在做什么？</li>
+<li>钱怎样被说出来，或者被藏着？</li>
+<li>男人怎样看女人？谁在看，谁被看？</li>
+<li>热闹之后，人物得到了什么、失去了什么？</li>
+<li>作品怎样处理“看得见”和“被省略”的东西？</li>
+</ul>
+<p>然后每个论点写一句话，必须能被文本证据支持，也必须允许反例。</p>
+<h3 id="52">5.2 每个论点排一条证据链</h3>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>段号</th>
+<th>原文写什么</th>
+<th>可以怎么用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>A1-04</code></td>
+<td>具体场景、动作、台词</td>
+<td>先让读者看到什么</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>A2-07</code></td>
+<td>关键转折</td>
+<td>这个细节怎样改变理解</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>B1-02</code></td>
+<td>另一部作品的对应场景</td>
+<td>两处放在一起比什么</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>B3-05</code></td>
+<td>结尾/对照</td>
+<td>比较后多知道了什么</td>
+</tr>
+</tbody>
+</table>
+<p>每条链两边都要有证据。不要一边分析得很细，另一边只顺带提一句。</p>
+<h3 id="53">5.3 再列五个比较点</h3>
+<p>用一张表，把两篇作品在同一问题上的段号并排：</p>
+<table>
+<thead>
+<tr>
+<th>比较点</th>
+<th>作品 A</th>
+<th>作品 B</th>
+<th>可说的差别</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>太阳/天亮</td>
+<td><code>A4-09</code></td>
+<td><code>B3-13</code></td>
+<td>一个靠舞台空间，一个靠叙述语气</td>
+</tr>
+<tr>
+<td>钱</td>
+<td><code>A1-18</code></td>
+<td><code>B1-04</code></td>
+<td>一个被念出来，一个被藏起来</td>
+</tr>
+<tr>
+<td>女人被看</td>
+<td><code>A1-10</code></td>
+<td><code>B1-03</code></td>
+<td>一个多声部，一个单声道</td>
+</tr>
+<tr>
+<td>酒/热闹</td>
+<td><code>A2-28</code></td>
+<td><code>B2-18</code></td>
+<td>一个散场后没有家，一个散场后关系不在</td>
+</tr>
+<tr>
+<td>形式</td>
+<td><code>A3-02</code></td>
+<td><code>B1-04</code></td>
+<td>一个把“看不见”变成可听/可看，一个留在语言里</td>
+</tr>
+</tbody>
+</table>
+<p>这张表就是你写比较段时的“骨架”。</p>
+<h3 id="54">5.4 再列一份关键引文表</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>引文</th>
+<th>作品</th>
+<th>段号</th>
+<th>行号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>“……”</td>
+<td>A</td>
+<td><code>A4-09</code></td>
+<td>L1234</td>
+</tr>
+<tr>
+<td>2</td>
+<td>“……”</td>
+<td>B</td>
+<td><code>B3-13</code></td>
+<td>L5678</td>
+</tr>
+</tbody>
+</table>
+<p>引文不要多，10–20 条就够。每条都要能支撑一个具体论点，不要为了好看而收集“金句”。</p>
+<hr />
+<h2 id="6-session-readme">6. 给下一次 session 写一份 README</h2>
+<p>你不可能每次都记得“上次做到哪、文件在哪、哪些引文核对过”。所以写一份 <code>README.md</code>，给下一次的自己或 AI 看。</p>
+<p>最少写这些：</p>
+<ol>
+<li><strong>每次开始的阅读顺序</strong>：README → INDEX → 例证路线 → 分析规范 → 相关段号 → 原文。</li>
+<li><strong>文件夹里有什么</strong>：每个文件一句话。</li>
+<li><strong>索引怎么用</strong>：段号/行号、标签、<code>核心例证</code> 很宽、索引不是原文。</li>
+<li><strong>写作底线</strong>：先文本后解释、观点—证据—解释、区分文本/解读/推测、比较围绕问题、不把人物当作者、不诊断人物、不堆术语、引文逐字。</li>
+<li><strong>参考文献规范</strong>：先看阅读状态；只读摘要就标“据摘要”；不伪造页码/DOI/引文；区分版本和译本。</li>
+<li><strong>输出约定</strong>：新文件放哪、不要覆盖旧稿、不要改原文、新增分段后要重跑校验。</li>
+<li><strong>更新规则</strong>：用户提出要求时，后续 session 可以更新 README；只改必要部分；在 changelog 记日期、改动、原因。</li>
+</ol>
+<p>一份 README 不需要很长。关键是让下一次 session 在五分钟内知道：<strong>这次该从哪里开始，什么不能做。</strong></p>
+<hr />
+<h2 id="7">7. 写论文前的检查清单</h2>
+<ul>
+<li>[ ] 我知道这次是“找例证”“写分析”“比较”“找文献”还是“改文字”？</li>
+<li>[ ] 我看过例证路线或标签反查表了吗？</li>
+<li>[ ] 我读了分析规范里和这次任务相关的章节吗？</li>
+<li>[ ] 我要用的引文，回原文逐字核对过吗？</li>
+<li>[ ] 我分清文本事实、合理解读和推测了吗？</li>
+<li>[ ] 我有没有把人物的话当成作者的观点？</li>
+<li>[ ] 我有没有为了显得深刻而堆术语？</li>
+<li>[ ] 如果用了文献，我标了阅读状态和出处吗？</li>
+<li>[ ] 我的比较是不是围绕一个问题，而不是两篇简介？</li>
+<li>[ ] 我有没有说出“比较后多知道了什么”？</li>
+</ul>
+<hr />
+<h2 id="8">8. 常见坑</h2>
+<ol>
+<li><strong>PDF 转出来顺序错乱</strong>：分栏、脚注、页眉页脚都会干扰。先读几页确认顺序，再开始切段。</li>
+<li><strong>OCR 错字被当成原文</strong>：尤其是人名、数字、标点。重要引文回 PDF 对照。</li>
+<li><strong>行号漂移</strong>：你后来重新转了一次 PDF，行号全变了。索引里的行号要重跑校验；不要凭旧行号引用。</li>
+<li><strong>引文是 AI 改写的</strong>：看起来很像，但不是原文。每条引文都要能 <code>grep</code> 到。</li>
+<li><strong>标签爆炸</strong>：一段贴十几个标签，反查表就失去意义。每段 3–7 个，<code>核心例证</code> 少用。</li>
+<li><strong>只整理一部作品</strong>：比较论文需要两边的证据。每一条论点都要问“另一部呢？”</li>
+<li><strong>把摘要当论文句子</strong>：摘要只是导航。论文里的每个判断都要有原文支撑。</li>
+<li><strong>把作者、叙述者、人物混为一谈</strong>：方达生说的不是曹禺说的，杰克说的不是海明威说的。</li>
+<li><strong>用文献代替文本</strong>：二手资料可以支持/对照，但不能代替你对具体场景的分析。</li>
+<li><strong>没有版本信息</strong>：不同版本的人物、台词、结尾可能不同。论文里要写清依据哪一版、哪一译本。</li>
+</ol>
+<hr />
+<h2 id="9">9. 一页流程总结</h2>
+<pre><code class="language-text">1. 建文件夹：原文 / 索引 / 参考文献
+2. PDF → txt：pdftotext 或 OCR；保留页码/章节锚点
+3. 验收：行数、首尾、章节标记、关键词能搜到
+4. 按幕/章切块，用 AI 或手动写分段索引
+   每段：段号｜行号｜标题｜摘要｜引文｜标签
+5. 校验：覆盖无缺口、引文逐字、标签合法
+6. 生成：标签反查表 + 全文速查地图
+7. 按论点整理：例证路线（3 条论点 + 5 个比较点 + 关键引文表）
+8. 写 README：阅读顺序、文件地图、写作底线、更新规则
+9. 写论文：先看例证路线，再回原文核对引文
+</code></pre>
+<hr />
+<h2 id="a-prompt">附录 A：可以直接改的 prompt</h2>
+<h3 id="a1">A1. 分块做索引</h3>
+<p>见第 3.4 节。把 <code>&lt;文件名&gt;</code>、<code>&lt;起&gt;</code>、<code>&lt;止&gt;</code>、<code>&lt;前缀&gt;</code>、<code>&lt;输出文件&gt;</code> 换成你的。</p>
+<h3 id="a2">A2. 合并分块索引</h3>
+<pre><code class="language-text">下面是一个作品的分块索引，分别覆盖 L1–L1200、L1201–L2400……
+请合并成一个 index_A.md：
+1. 去掉重复的文件标题和重复的覆盖说明；
+2. 保留各章/各幕标题，按行号顺序排列；
+3. 检查段号是否连续、有没有重复；
+4. 不要改写摘要和引文；
+5. 合并后输出一份「覆盖核对」表：段号 | 起止行 | 一句话内容。
+</code></pre>
+<h3 id="a3">A3. 做例证路线</h3>
+<pre><code class="language-text">根据 index_A.md 和 index_B.md，为一篇比较论文整理三条论点的例证路线：
+A. 太阳/天亮时人物在哪里，作品怎样让读者注意到这个时刻；
+B. 钱怎样被说出来或被藏着；
+C. 男人怎样看女人，谁在看、谁被看。
+
+要求：
+1. 每条论点下，两部作品各列 3–5 个段号；
+2. 每段写：原文写什么、可以怎么用、和另一部作品的哪一段对照；
+3. 引文逐字，标行号；
+4. 最后列一张五个比较点的速查表；
+5. 不要写成完整论文，只做证据路线。
+</code></pre>
+<h3 id="a4-readme">A4. 写 README</h3>
+<pre><code class="language-text">请为这个项目写一份 README.md，给下一次 session 看。至少包括：
+1. 每次开始的阅读顺序；
+2. 文件夹里每个文件的作用；
+3. 索引的段号/行号/标签怎么用；
+4. 文学分析的几条底线（先文本后解释、观点—证据—解释、
+   区分文本/解读/推测、比较围绕问题、不把人物当作者、不诊断人物、
+   不堆术语、引文逐字）；
+5. 参考文献的阅读状态和引用规范；
+6. 文件命名和更新约定；
+7. 说明用户可以要求后续 session 更新这份 README，并要求在 changelog 记录。
+语气自然一点，不要写成公司规章。
+</code></pre>
+<hr />
+<h2 id="b">附录 B：一个真实项目的样例（只列结构，不贴全文）</h2>
+<p>这套流程在一个《日出》×《太阳照常升起》的项目里跑过，最后的结果是：</p>
+<ul>
+<li>《日出》118 段，覆盖 L1–L5072；</li>
+<li>《太阳照常升起》137 段，覆盖 L1–L7448；</li>
+<li>共 255 段、832 条引文、102 个标签；</li>
+<li>脚本校验：0 处覆盖缺口，0 条引文对不上；</li>
+<li>另有一份按论点 A/B/C 和五个比较点整理的 <code>例证路线.md</code>。</li>
+</ul>
+<p>真正有用的不是“255 段”这个数字，而是三件事：</p>
+<ol>
+<li><strong>写论文时不用通读全文</strong>：先看例证路线，按段号回原文。</li>
+<li><strong>引文不会凭记忆编</strong>：每条引文都能在标注行找到。</li>
+<li><strong>下一次 session 能接着做</strong>：README 说清楚从哪开始、什么不能做。</li>
+</ol>
+<p>你的两篇文本可能完全不一样。把文件名、段号前缀、标签表换掉，流程是一样的。</p>
+<p>如果想看真实成品长什么样，可以对照本文件夹里的 <code>README.md</code>、<code>文本索引/01_日出_分段索引.md</code>、<code>文本索引/05_Paper2_例证路线.md</code>。但那两份索引是具体作品的内容，不需要照抄；照抄结构和方法就够了。</p>
+<hr />
+<blockquote>
+<p>这份文档可以自由修改、拆分、发给朋友。唯一建议保留的是那句：</p>
+<p><strong>索引是地图，不是原文；引文一定回原文。</strong></p>
+</blockquote>
+</main>
+<footer class="site-footer">
+  <p>《日出》×《太阳照常升起》比较阅读资料库 · <a href="viewer.html">原文跳转</a> · <a href="index.html">首页</a></p>
+</footer>
+</body>
+</html>
